@@ -25,10 +25,10 @@ const kinds = [
         <details open>
             <summary class="py-3 text-base" id="projects">Projects</summary>
             <ul>
-                <li><a class="py-2 text-sm" href="/projects">All projects</a></li>
+                <li><a class="py-2 text-sm whitespace-nowrap" href="/projects">All projects</a></li>
                 {kinds.map((k) => (
                     <li>
-                        <a class="py-2 text-sm" href={`/projects#${k.id}`}>
+                        <a class="py-2 text-sm whitespace-nowrap" href={`/projects#${k.id}`}>
                             {k.label}
                             <span class="opacity-50 ml-1">{k.count}</span>
                         </a>
@@ -41,10 +41,10 @@ const kinds = [
         <details open>
             <summary class="py-3 text-base" id="blog">Blog</summary>
             <ul>
-                <li><a class="py-2 text-sm" href="/blog/">All posts</a></li>
+                <li><a class="py-2 text-sm whitespace-nowrap" href="/blog/">All posts</a></li>
                 {cats.map((c) => (
                     <li>
-                        <a class="py-2 text-sm" href={`/blog/category/${c.name}`}>
+                        <a class="py-2 text-sm whitespace-nowrap" href={`/blog/category/${c.name}`}>
                             {c.name}
                             <span class="opacity-50 ml-1">{c.count}</span>
                         </a>
