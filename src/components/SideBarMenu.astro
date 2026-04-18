@@ -1,13 +1,36 @@
 ---
+import { getBlogByCategory } from "../lib/content";
+import { BLOG_CATEGORIES } from "../content/config";
+
 const { sideBarActiveItemID } = Astro.props;
 const activeClass = "bg-base-300";
+
+const grouped = await getBlogByCategory();
+const cats = BLOG_CATEGORIES
+  .map((c) => ({ name: c, count: grouped.get(c)?.length ?? 0 }))
+  .filter((c) => c.count > 0);
 ---
 
 <ul class="menu grow shrink menu-md overflow-y-auto">
     <li><a class="py-3 text-base" id="home" href="/">Home</a></li>
     <li><a class="py-3 text-base" id="resume" href="/resume/main">Resume</a></li>
     <li><a class="py-3 text-base" id="projects" href="/projects">Projects</a></li>
-    <li><a class="py-3 text-base" id="blog" href="/blog/">Blog</a></li>
+    <li>
+        <details open id="blog-group">
+            <summary class="py-3 text-base">Blog</summary>
+            <ul>
+                <li><a class="py-2 text-sm" id="blog" href="/blog/">All posts</a></li>
+                {cats.map((c) => (
+                    <li>
+                        <a class="py-2 text-sm" href={`/blog/category/${c.name}`}>
+                            {c.name}
+                            <span class="opacity-50 ml-1">{c.count}</span>
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </details>
+    </li>
     <li><a class="py-3 text-base" id="learnings" href="/learnings">Learnings</a></li>
     <li><a class="py-3 text-base" id="about" href="/about">About</a></li>
 </ul>
