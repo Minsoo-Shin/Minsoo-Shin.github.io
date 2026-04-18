@@ -36,8 +36,9 @@ const sections = [
     ))}
   </div>
 
+  <div data-kind-root>
   {sections.map((section) => (
-    <section class="mb-10 scroll-mt-8" id={section.id}>
+    <section class="mb-10 scroll-mt-8" id={section.id} data-kind={section.id}>
       <h2 class="text-2xl font-bold mb-3">{section.title}</h2>
       {section.items.map((p) => (
         <div id={p.slug} data-tracks={p.data.tracks.join(",")}>
@@ -57,11 +58,12 @@ const sections = [
       ))}
     </section>
   ))}
+  </div>
 
   <script>
     const root = document.querySelector("[data-filter-root]");
     const items = document.querySelectorAll<HTMLElement>("[data-tracks]");
-    const sections = document.querySelectorAll<HTMLElement>("section[id]");
+    const sections = document.querySelectorAll<HTMLElement>("[data-kind]");
 
     root?.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
@@ -77,10 +79,22 @@ const sections = [
     function applyKindFilter() {
       const hash = window.location.hash.replace("#", "");
       sections.forEach((s) => {
-        s.style.display = !hash || s.id === hash ? "" : "none";
+        const kind = s.dataset.kind ?? "";
+        s.style.display = !hash || kind === hash ? "" : "none";
       });
     }
     applyKindFilter();
     window.addEventListener("hashchange", applyKindFilter);
+    window.addEventListener("popstate", applyKindFilter);
+
+    // Also handle clicks on in-page/sidebar links to same hash (where hashchange doesn't fire)
+    document.addEventListener("click", (e) => {
+      const a = (e.target as HTMLElement).closest("a");
+      if (!a) return;
+      const href = a.getAttribute("href") ?? "";
+      if (!href.startsWith("/projects")) return;
+      // Defer one tick so window.location.hash is up-to-date
+      setTimeout(applyKindFilter, 0);
+    });
   </script>
 </BaseLayout>
