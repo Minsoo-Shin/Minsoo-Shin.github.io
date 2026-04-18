@@ -2,40 +2,93 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import HorizontalCard from "../components/HorizontalCard.astro";
 import { Image } from "astro:assets";
-import { getBlogPosts, getFeaturedProjects } from "../lib/content";
+import { getBlogPosts, getFeaturedProjects, getResume, getExperience } from "../lib/content";
 
-const posts = (await getBlogPosts()).slice(0, 5);
+const posts = (await getBlogPosts()).slice(0, 4);
 const featured = await getFeaturedProjects();
+const mainResume = await getResume("main");
+const highlights = mainResume?.entry.data.highlights ?? [];
+const experiences = await getExperience();
+const current = experiences.find((e) => e.data.current);
 ---
 
 <BaseLayout sideBarActiveItemID="home">
-  <div class="pb-12 mt-5 md:flex md:items-start md:gap-8">
+  {/* HERO */}
+  <section class="pb-10 mt-5 md:flex md:items-center md:gap-10">
     <div class="flex-1">
-      <div class="text-xl py-1">Hey there 👋</div>
-      <div class="text-5xl font-bold">Minsoo Shin</div>
-      <div class="text-3xl py-3 font-bold">Backend Engineer · ex-Mechanical Engineer</div>
-      <div class="py-2">
-        <p class="text-lg">
-          Backend engineer (Go, Kotlin, Kafka, MQTT, CDC) with a background in OLED module
-          mechanical design at Samsung Display. Currently at <b>Partridge Systems</b>,
-          building backends for autonomous-driving scenario pipelines (ISO 21448 / SOTIF)
-          on a Physical AI platform.
-        </p>
-      </div>
-      <div class="mt-8">
-        <a class="btn" href="/resume/main">Resume</a>
-        <a class="btn btn-outline ml-3" href="/resume/hardware">Hardware track</a>
-        <a class="btn btn-outline ml-3" href="/resume/software">Software track</a>
+      <div class="text-lg opacity-70">Hey there 👋</div>
+      <h1 class="text-5xl md:text-6xl font-bold mt-1">Minsoo Shin</h1>
+      <p class="text-2xl md:text-3xl font-bold opacity-80 mt-2">
+        Backend Engineer · <span class="opacity-60">ex-Mechanical Engineer</span>
+      </p>
+      <p class="text-base md:text-lg opacity-80 mt-5 max-w-[560px]">
+        OLED 모듈 기구설계에서 출발해, Kafka · MQTT · CDC 파이프라인으로 옮겨간 엔지니어.
+        하드웨어 도메인 이해와 현대 백엔드 아키텍처가 같은 자리에서 쓰이는 지점에서 일합니다.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2">
+        <a class="btn btn-primary btn-sm" href="/resume/brief/main">이력서 (간략) →</a>
+        <a class="btn btn-outline btn-sm" href="/resume/main">전체 이력서</a>
+        <a class="btn btn-outline btn-sm" href="/projects">Projects</a>
       </div>
     </div>
     <div class="mt-6 md:mt-0 md:w-[280px] md:shrink-0">
-      <Image src="/profile_otter.png" alt="Minsoo otter" width={560} height={840} format="webp" class="w-full rounded-2xl" />
+      <Image
+        src="/profile_otter.png"
+        alt="Minsoo otter"
+        width={560}
+        height={840}
+        format="webp"
+        class="w-full rounded-2xl"
+      />
     </div>
-  </div>
+  </section>
 
+  {/* NOW */}
+  {current && (
+    <section class="mb-10 p-5 rounded-xl border border-base-300 bg-base-100">
+      <div class="flex items-baseline gap-2 mb-1">
+        <span class="text-xs uppercase tracking-widest font-bold opacity-60">Now</span>
+        <span class="badge badge-primary badge-sm">Current</span>
+      </div>
+      <div class="text-lg font-semibold">
+        {current.data.role} @ {current.data.company}
+      </div>
+      {current.data.perspectives.software?.summary && (
+        <p class="opacity-80 mt-1">{current.data.perspectives.software.summary}</p>
+      )}
+      {current.data.stack && current.data.stack.length > 0 && (
+        <div class="mt-3 flex flex-wrap gap-1">
+          {current.data.stack.map((s) => (
+            <span class="badge badge-outline badge-sm">{s}</span>
+          ))}
+        </div>
+      )}
+    </section>
+  )}
+
+  {/* IMPACT HIGHLIGHTS */}
+  {highlights.length > 0 && (
+    <section class="mb-12">
+      <h2 class="text-xl font-bold mb-3 opacity-70">Impact at a glance</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {highlights.slice(0, 4).map((h) => (
+          <div class="rounded-lg border border-base-300 p-3 bg-base-100">
+            <div class="text-xl md:text-2xl font-bold text-primary">{h.value}</div>
+            <div class="text-xs font-semibold mt-1">{h.label}</div>
+            {h.note && <div class="text-[10px] opacity-60 mt-0.5">{h.note}</div>}
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* FEATURED PROJECTS */}
   {featured.length > 0 && (
-    <div>
-      <div class="text-3xl w-full font-bold mb-2">Featured projects</div>
+    <section class="mb-12">
+      <div class="flex items-baseline justify-between mb-3">
+        <h2 class="text-2xl font-bold">Featured projects</h2>
+        <a href="/projects" class="text-sm opacity-70 underline underline-offset-4">전체 →</a>
+      </div>
       {featured.map((p) => (
         <>
           <HorizontalCard
@@ -51,26 +104,29 @@ const featured = await getFeaturedProjects();
           <div class="divider my-0" />
         </>
       ))}
-    </div>
+    </section>
   )}
 
-  <div>
-    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
-  </div>
-
-  {posts.map((post) => (
-    <>
-      <HorizontalCard
-        title={post.data.title}
-        img={post.data.heroImage}
-        desc={post.data.description}
-        url={`/blog/${post.slug}`}
-        target="_self"
-        badge={post.data.badge}
-        tags={post.data.tags}
-        date={post.data.pubDate}
-      />
-      <div class="divider my-0" />
-    </>
-  ))}
+  {/* LATEST BLOG */}
+  <section>
+    <div class="flex items-baseline justify-between mb-3">
+      <h2 class="text-2xl font-bold">Latest from blog</h2>
+      <a href="/blog" class="text-sm opacity-70 underline underline-offset-4">전체 →</a>
+    </div>
+    {posts.map((post) => (
+      <>
+        <HorizontalCard
+          title={post.data.title}
+          img={post.data.heroImage}
+          desc={post.data.description}
+          url={`/blog/${post.slug}`}
+          target="_self"
+          badge={post.data.badge}
+          tags={post.data.tags}
+          date={post.data.pubDate}
+        />
+        <div class="divider my-0" />
+      </>
+    ))}
+  </section>
 </BaseLayout>
