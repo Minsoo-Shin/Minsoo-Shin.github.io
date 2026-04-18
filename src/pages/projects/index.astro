@@ -19,8 +19,8 @@ const kindLabel = (k: string) =>
   k === "company" ? "회사" : k === "side" ? "사이드" : "오픈소스";
 
 const sections = [
-  { id: "company", title: "Company projects", items: company },
-  { id: "side", title: "Side projects", items: side },
+  { id: "company", title: "Company", items: company },
+  { id: "side", title: "Side", items: side },
   { id: "open-source", title: "Open source", items: oss },
 ].filter((s) => s.items.length > 0);
 ---
