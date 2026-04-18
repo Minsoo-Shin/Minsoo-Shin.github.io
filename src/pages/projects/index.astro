@@ -19,9 +19,9 @@ const kindLabel = (k: string) =>
   k === "company" ? "회사" : k === "side" ? "사이드" : "오픈소스";
 
 const sections = [
-  { title: "Company projects", items: company },
-  { title: "Side projects", items: side },
-  { title: "Open source", items: oss },
+  { id: "company", title: "Company projects", items: company },
+  { id: "side", title: "Side projects", items: side },
+  { id: "open-source", title: "Open source", items: oss },
 ].filter((s) => s.items.length > 0);
 ---
 
@@ -37,7 +37,7 @@ const sections = [
   </div>
 
   {sections.map((section) => (
-    <section class="mb-10">
+    <section class="mb-10 scroll-mt-8" id={section.id}>
       <h2 class="text-2xl font-bold mb-3">{section.title}</h2>
       {section.items.map((p) => (
         <div id={p.slug} data-tracks={p.data.tracks.join(",")}>
