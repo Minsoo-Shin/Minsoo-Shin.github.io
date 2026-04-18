@@ -12,10 +12,10 @@ const { category } = Astro.params;
 const posts = await getPostsByCategory(category!);
 ---
 
-<BaseLayout title={`Category: ${category}`} sideBarActiveItemID="blog">
+<BaseLayout title={`${category} · Blog`} sideBarActiveItemID="blog">
   <div class="mb-5">
     <a href="/blog" class="text-sm opacity-70">← Blog</a>
-    <div class="text-3xl w-full font-bold">Category: {category}</div>
+    <div class="text-3xl w-full font-bold">{category}</div>
   </div>
 
   {posts.length === 0 ? (
