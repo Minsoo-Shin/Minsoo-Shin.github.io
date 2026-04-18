@@ -61,39 +61,46 @@ const sections = [
   </div>
 
   <script>
-    const root = document.querySelector("[data-filter-root]");
-    const items = document.querySelectorAll<HTMLElement>("[data-tracks]");
-    const sections = document.querySelectorAll<HTMLElement>("[data-kind]");
-
-    root?.addEventListener("click", (e) => {
-      const target = e.target as HTMLElement;
-      const filter = target?.dataset?.filter;
-      if (!filter) return;
-      items.forEach((el) => {
-        const tracks = (el.dataset.tracks ?? "").split(",");
-        const visible = filter === "all" || tracks.includes(filter) || tracks.includes("both");
-        el.style.display = visible ? "" : "none";
-      });
-    });
-
+    // Re-query DOM on every run — Astro ViewTransitions replace nodes, so cached refs go stale.
     function applyKindFilter() {
       const hash = window.location.hash.replace("#", "");
-      sections.forEach((s) => {
+      document.querySelectorAll<HTMLElement>("[data-kind]").forEach((s) => {
         const kind = s.dataset.kind ?? "";
         s.style.display = !hash || kind === hash ? "" : "none";
       });
     }
-    applyKindFilter();
+
+    function applyTrackFilter(filter: string) {
+      document.querySelectorAll<HTMLElement>("[data-tracks]").forEach((el) => {
+        const tracks = (el.dataset.tracks ?? "").split(",");
+        const visible = filter === "all" || tracks.includes(filter) || tracks.includes("both");
+        el.style.display = visible ? "" : "none";
+      });
+    }
+
+    function init() {
+      const root = document.querySelector("[data-filter-root]");
+      if (!root || (root as HTMLElement).dataset.bound) return;
+      (root as HTMLElement).dataset.bound = "1";
+      root.addEventListener("click", (e) => {
+        const target = e.target as HTMLElement;
+        const filter = target?.dataset?.filter;
+        if (!filter) return;
+        applyTrackFilter(filter);
+      });
+      applyKindFilter();
+    }
+
+    init();
+    // Re-run on Astro view transitions + hash changes
+    document.addEventListener("astro:page-load", init);
     window.addEventListener("hashchange", applyKindFilter);
     window.addEventListener("popstate", applyKindFilter);
-
-    // Also handle clicks on in-page/sidebar links to same hash (where hashchange doesn't fire)
     document.addEventListener("click", (e) => {
       const a = (e.target as HTMLElement).closest("a");
       if (!a) return;
       const href = a.getAttribute("href") ?? "";
       if (!href.startsWith("/projects")) return;
-      // Defer one tick so window.location.hash is up-to-date
       setTimeout(applyKindFilter, 0);
     });
   </script>
