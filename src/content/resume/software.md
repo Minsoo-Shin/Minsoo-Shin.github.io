@@ -7,6 +7,19 @@ summary: |
   데이터 정합성과 검색 품질을 동시에 끌어올렸고, POS 도메인에서 Kafka · MQTT · SQS
   이벤트 드리븐 아키텍처로 네트워크 장애 하에서도 주문 유실 0건을 달성했습니다.
 published: true
+highlights:
+  - value: "0건"
+    label: "주문 데이터 유실"
+    note: "네트워크 장애 하 Zero Data Loss"
+  - value: "0.23→0.39"
+    label: "검색 정확도 (mAP@30)"
+    note: "Elasticsearch 쿼리·동의어·Function Score"
+  - value: "10x"
+    label: "대량 동기화 성능"
+    note: "CDC Sink Async Worker + Bulk API"
+  - value: "41%↓"
+    label: "글로벌 이미지 처리 비용"
+    note: "Lambda@Edge + S3 리전 재구성"
 experience:
   - partridge-systems
   - payhere

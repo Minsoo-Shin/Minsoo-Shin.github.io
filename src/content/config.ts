@@ -92,6 +92,15 @@ const resumeCollection = defineCollection({
     title: z.string(),
     tagline: z.string().optional(),
     summary: z.string().optional(),
+    highlights: z
+      .array(
+        z.object({
+          value: z.string(),
+          label: z.string(),
+          note: z.string().optional(),
+        })
+      )
+      .optional(),
     experience: z.array(reference("experience")).optional(),
     projects: z.array(reference("projects")).optional(),
     skills: z

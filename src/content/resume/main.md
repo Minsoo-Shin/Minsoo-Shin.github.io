@@ -11,6 +11,25 @@ summary: |
   Systems 에서 자율주행 안전성(ISO 21448 / SOTIF) 시나리오 파이프라인을 Physical AI 플랫폼
   위에서 설계하며, 하드웨어 배경(OLED 기구설계)과 백엔드 경험을 같은 자리에서 활용하고 있습니다.
 published: true
+highlights:
+  - value: "0건"
+    label: "주문 데이터 유실"
+    note: "POS · 페이히어"
+  - value: "41%↓"
+    label: "클라우드 비용 절감"
+    note: "글로벌 이미지 인프라 · 룩코"
+  - value: "0.23→0.39"
+    label: "검색 정확도 (mAP@30)"
+    note: "이커머스 검색 · 룩코"
+  - value: "10x"
+    label: "대량 동기화 성능"
+    note: "CDC Sink Connector · 룩코"
+  - value: "90%↓"
+    label: "API 콜 수 절감"
+    note: "해시 캐시 · 페이히어"
+  - value: "4년+"
+    label: "백엔드 경력"
+    note: "Go · Kotlin · Java"
 experience:
   - partridge-systems
   - payhere

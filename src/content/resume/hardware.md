@@ -8,6 +8,19 @@ summary: |
   라이프사이클을 총괄. 이후 커리어를 백엔드로 전환해 Smart Factory · AI-driven
   Manufacturing · Physical AI를 소프트웨어 관점에서 바라보고 있음.
 published: true
+highlights:
+  - value: "4년"
+    label: "OLED 모듈 개발"
+    note: "삼성디스플레이"
+  - value: "Apple"
+    label: "플래그십 iPhone 패널"
+    note: "개발 Lifecycle 총괄 PM"
+  - value: "IQC/OQC"
+    label: "품질 관리 체계"
+    note: "RSS · 통계적 공차 분석"
+  - value: "→ 백엔드 4년"
+    label: "커리어 전환 후"
+    note: "Go · Kotlin · Java · SOTIF"
 experience:
   - samsung-display
   - partridge-systems
