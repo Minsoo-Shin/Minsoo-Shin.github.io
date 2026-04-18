@@ -32,7 +32,12 @@ function fmtRange(start: Date, end?: Date, current?: boolean) {
 <BaseLayout title={entry.data.title} sideBarActiveItemID="resume">
   {/* HERO */}
   <header class="mb-10">
-    <h1 class="text-4xl md:text-5xl font-bold">{entry.data.title}</h1>
+    <div class="flex items-baseline justify-between flex-wrap gap-3">
+      <h1 class="text-4xl md:text-5xl font-bold">{entry.data.title}</h1>
+      <a href={`/resume/brief/${track}`} class="text-sm opacity-70 underline underline-offset-4">
+        간략 버전 ↗
+      </a>
+    </div>
     {entry.data.tagline && (
       <p class="text-lg md:text-xl opacity-80 mt-3">{entry.data.tagline}</p>
     )}

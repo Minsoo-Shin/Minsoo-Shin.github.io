@@ -1,0 +1,176 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import { getResume, getProjectsByTrack } from "../../../lib/content";
+import { RESUME_TRACKS } from "../../../content/config";
+import dayjs from "dayjs";
+
+export async function getStaticPaths() {
+  return RESUME_TRACKS.map((track) => ({ params: { track } }));
+}
+
+const { track } = Astro.params as { track: (typeof RESUME_TRACKS)[number] };
+const data = await getResume(track);
+if (!data) return Astro.redirect("/404");
+
+const { entry, experience } = data;
+
+const trackKey = track === "hardware" ? "hardware" : "software";
+const allTrackProjects = await getProjectsByTrack(track === "main" ? "all" : trackKey);
+const featuredProjects = allTrackProjects.filter((p) => p.data.featured).slice(0, 6);
+
+const perspectiveKey: "hardware" | "software" | null =
+  track === "hardware" ? "hardware" : track === "software" ? "software" : null;
+
+function fmtRange(start: Date, end?: Date, current?: boolean) {
+  const s = dayjs(start).format("YYYY.MM");
+  if (current) return `${s}–Present`;
+  if (end) return `${s}–${dayjs(end).format("YYYY.MM")}`;
+  return s;
+}
+---
+
+<BaseLayout title={`${entry.data.title} · Brief`} sideBarActiveItemID="resume">
+  {/* HERO */}
+  <header class="mb-8">
+    <div class="flex items-baseline justify-between flex-wrap gap-3">
+      <h1 class="text-3xl md:text-4xl font-bold">{entry.data.title}</h1>
+      <a href={`/resume/${track}`} class="text-sm opacity-70 underline underline-offset-4">
+        전체 버전 ↗
+      </a>
+    </div>
+    {entry.data.tagline && <p class="opacity-80 mt-2">{entry.data.tagline}</p>}
+
+    {entry.data.contact && (
+      <div class="flex flex-wrap gap-3 mt-4 text-sm">
+        {entry.data.contact.email && (
+          <a href={`mailto:${entry.data.contact.email}`} class="opacity-70 hover:opacity-100">
+            ✉ {entry.data.contact.email}
+          </a>
+        )}
+        {entry.data.contact.github && (
+          <a href={entry.data.contact.github} target="_blank" class="opacity-70 hover:opacity-100">
+            GitHub ↗
+          </a>
+        )}
+        {entry.data.contact.linkedin && (
+          <a href={entry.data.contact.linkedin} target="_blank" class="opacity-70 hover:opacity-100">
+            LinkedIn ↗
+          </a>
+        )}
+      </div>
+    )}
+
+    <div class="tabs tabs-boxed w-fit mt-5">
+      {RESUME_TRACKS.map((t) => (
+        <a href={`/resume/brief/${t}`} class={`tab ${t === track ? "tab-active" : ""}`}>
+          {t}
+        </a>
+      ))}
+    </div>
+  </header>
+
+  {/* IMPACT HIGHLIGHTS */}
+  {entry.data.highlights && entry.data.highlights.length > 0 && (
+    <section class="mb-10">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+        {entry.data.highlights.slice(0, 4).map((h) => (
+          <div class="rounded-lg border border-base-300 p-3 bg-base-100">
+            <div class="text-xl md:text-2xl font-bold text-primary">{h.value}</div>
+            <div class="text-xs font-semibold mt-1">{h.label}</div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* EXPERIENCE — one line per role */}
+  {experience.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-3">Experience</h2>
+      <ul class="space-y-2">
+        {experience.map((exp) => {
+          const persp = perspectiveKey ? exp.data.perspectives?.[perspectiveKey] : null;
+          const summary =
+            persp?.summary ??
+            exp.data.perspectives?.software?.summary ??
+            exp.data.perspectives?.hardware?.summary;
+          return (
+            <li class="flex gap-3 items-baseline">
+              <span class="text-xs font-mono opacity-60 shrink-0 w-[120px]">
+                {fmtRange(exp.data.startDate, exp.data.endDate, exp.data.current)}
+              </span>
+              <span class="min-w-0">
+                <span class="font-semibold">{exp.data.role}</span>
+                <span class="opacity-70"> @ {exp.data.company}</span>
+                {exp.data.current && (
+                  <span class="badge badge-primary badge-xs ml-2 align-middle">Current</span>
+                )}
+                {summary && <span class="opacity-70 block text-sm">{summary}</span>}
+              </span>
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
+
+  {/* PROJECTS — link to /projects/[slug] for depth */}
+  {featuredProjects.length > 0 && (
+    <section class="mb-10">
+      <div class="flex items-baseline justify-between mb-3">
+        <h2 class="text-xl font-bold">Selected projects</h2>
+        <a href="/projects" class="text-sm opacity-70 underline underline-offset-4">
+          전체 프로젝트 →
+        </a>
+      </div>
+      <div class="grid md:grid-cols-2 gap-2">
+        {featuredProjects.map((p) => (
+          <a
+            href={`/projects/${p.slug}`}
+            class="block rounded-lg border border-base-300 p-3 bg-base-100 hover:border-primary transition"
+          >
+            <div class="flex items-baseline justify-between gap-2">
+              <div class="font-semibold truncate">{p.data.title}</div>
+              <span class="text-xs opacity-60 shrink-0">→</span>
+            </div>
+            {p.data.company && (
+              <div class="text-xs text-primary mt-0.5">@ {p.data.company}</div>
+            )}
+            <p class="text-xs opacity-70 mt-1 line-clamp-2">{p.data.description}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* SKILLS — compact */}
+  {entry.data.skills && entry.data.skills.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-3">Skills</h2>
+      <div class="flex flex-wrap gap-1">
+        {entry.data.skills.flatMap((g) => g.items).map((item) => (
+          <span class="badge badge-outline badge-sm">{item}</span>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* EDUCATION — single line */}
+  {entry.data.education && entry.data.education.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-xl font-bold mb-3">Education</h2>
+      {entry.data.education.map((ed) => (
+        <div class="text-sm">
+          <span class="font-semibold">{ed.school}</span>
+          {ed.degree && <span class="opacity-70"> · {ed.degree}</span>}
+          {(ed.startDate || ed.endDate) && (
+            <span class="opacity-60 font-mono text-xs ml-2">
+              {ed.startDate ? dayjs(ed.startDate).format("YYYY") : ""}
+              {ed.endDate ? `–${dayjs(ed.endDate).format("YYYY")}` : ""}
+            </span>
+          )}
+        </div>
+      ))}
+    </section>
+  )}
+</BaseLayout>
