@@ -28,7 +28,7 @@ const kinds = [
                 <li><a class="py-2 text-sm whitespace-nowrap" href="/projects">All projects</a></li>
                 {kinds.map((k) => (
                     <li>
-                        <a class="py-2 text-sm flex justify-between items-center" href={`/projects#${k.id}`}>
+                        <a class="py-2 text-sm flex justify-between items-center" href={`/projects/#${k.id}`}>
                             <span class="truncate">{k.label}</span>
                             <span class="opacity-50 ml-2">{k.count}</span>
                         </a>
