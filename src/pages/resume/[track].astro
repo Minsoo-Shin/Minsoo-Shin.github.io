@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getResume } from "../../lib/content";
+import { RESUME_TRACKS } from "../../content/config";
+import dayjs from "dayjs";
+
+export async function getStaticPaths() {
+  return RESUME_TRACKS.map((track) => ({ params: { track } }));
+}
+
+const { track } = Astro.params as { track: (typeof RESUME_TRACKS)[number] };
+const data = await getResume(track);
+
+if (!data) {
+  return Astro.redirect("/404");
+}
+
+const { entry, experience, projects } = data;
+const { Content } = await entry.render();
+
+const perspectiveKey: "hardware" | "software" | null =
+  track === "hardware" ? "hardware" : track === "software" ? "software" : null;
+
+function fmtRange(start: Date, end?: Date, current?: boolean) {
+  const s = dayjs(start).format("YYYY.MM");
+  if (current) return `${s} – Present`;
+  if (end) return `${s} – ${dayjs(end).format("YYYY.MM")}`;
+  return s;
+}
+---
+
+<BaseLayout title={entry.data.title} sideBarActiveItemID="resume">
+  <div class="mb-4">
+    <div class="tabs tabs-boxed w-fit">
+      {RESUME_TRACKS.map((t) => (
+        <a href={`/resume/${t}`} class={`tab ${t === track ? "tab-active" : ""}`}>{t}</a>
+      ))}
+    </div>
+  </div>
+
+  <header class="mb-8">
+    <h1 class="text-4xl font-bold">{entry.data.title}</h1>
+    {entry.data.tagline && <p class="text-xl opacity-80 mt-2">{entry.data.tagline}</p>}
+    {entry.data.summary && <p class="mt-4">{entry.data.summary}</p>}
+  </header>
+
+  {experience.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Experience</h2>
+      {experience.map((exp) => {
+        const persp = perspectiveKey ? exp.data.perspectives?.[perspectiveKey] : null;
+        const summary = persp?.summary ?? exp.data.perspectives?.software?.summary ?? exp.data.perspectives?.hardware?.summary;
+        const highlights =
+          persp?.highlights ??
+          [
+            ...(exp.data.perspectives?.hardware?.highlights ?? []),
+            ...(exp.data.perspectives?.software?.highlights ?? []),
+          ];
+        return (
+          <div class="mb-6">
+            <div class="flex flex-wrap items-baseline justify-between">
+              <div>
+                <span class="font-bold text-lg">{exp.data.role}</span>
+                <span class="opacity-70"> · {exp.data.company}</span>
+              </div>
+              <div class="text-sm opacity-70">
+                {fmtRange(exp.data.startDate, exp.data.endDate, exp.data.current)}
+                {exp.data.location && <span> · {exp.data.location}</span>}
+              </div>
+            </div>
+            {summary && <p class="mt-1">{summary}</p>}
+            {highlights.length > 0 && (
+              <ul class="list-disc ml-6 mt-2">
+                {highlights.map((h) => <li>{h}</li>)}
+              </ul>
+            )}
+            {exp.data.stack && exp.data.stack.length > 0 && (
+              <div class="mt-2 flex flex-wrap gap-1">
+                {exp.data.stack.map((s) => <span class="badge badge-outline">{s}</span>)}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </section>
+  )}
+
+  {projects.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Selected projects</h2>
+      {projects.map((p) => (
+        <div class="mb-4">
+          <a href={`/projects/${p.slug}`} class="font-bold">{p.data.title}</a>
+          <p class="opacity-80">{p.data.description}</p>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {entry.data.skills && entry.data.skills.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Skills</h2>
+      {entry.data.skills.map((g) => (
+        <div class="mb-2">
+          <span class="font-bold">{g.group}:</span>
+          <span class="ml-2">{g.items.join(", ")}</span>
+        </div>
+      ))}
+    </section>
+  )}
+
+  {entry.data.education && entry.data.education.length > 0 && (
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Education</h2>
+      {entry.data.education.map((ed) => (
+        <div class="mb-2">
+          <div class="font-bold">{ed.school}</div>
+          {ed.degree && <div class="opacity-80">{ed.degree}</div>}
+          {(ed.startDate || ed.endDate) && (
+            <div class="text-sm opacity-70">
+              {ed.startDate ? dayjs(ed.startDate).format("YYYY.MM") : ""}
+              {ed.endDate ? ` – ${dayjs(ed.endDate).format("YYYY.MM")}` : ""}
+            </div>
+          )}
+        </div>
+      ))}
+    </section>
+  )}
+
+  <article class="prose max-w-none">
+    <Content />
+  </article>
+</BaseLayout>

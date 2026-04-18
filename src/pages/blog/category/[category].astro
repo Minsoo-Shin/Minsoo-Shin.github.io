@@ -1,0 +1,40 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import HorizontalCard from "../../../components/HorizontalCard.astro";
+import { getPostsByCategory } from "../../../lib/content";
+import { BLOG_CATEGORIES } from "../../../content/config";
+
+export async function getStaticPaths() {
+  return BLOG_CATEGORIES.map((category) => ({ params: { category } }));
+}
+
+const { category } = Astro.params;
+const posts = await getPostsByCategory(category!);
+---
+
+<BaseLayout title={`Category: ${category}`} sideBarActiveItemID="blog">
+  <div class="mb-5">
+    <a href="/blog" class="text-sm opacity-70">← Blog</a>
+    <div class="text-3xl w-full font-bold">Category: {category}</div>
+  </div>
+
+  {posts.length === 0 ? (
+    <p class="opacity-70">No posts yet in this category.</p>
+  ) : (
+    posts.map((post) => (
+      <>
+        <HorizontalCard
+          title={post.data.title}
+          img={post.data.heroImage}
+          desc={post.data.description}
+          url={`/blog/${post.slug}`}
+          target="_self"
+          badge={post.data.badge}
+          tags={post.data.tags}
+          date={post.data.pubDate}
+        />
+        <div class="divider my-0" />
+      </>
+    ))
+  )}
+</BaseLayout>

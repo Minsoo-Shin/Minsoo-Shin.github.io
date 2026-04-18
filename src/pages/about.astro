@@ -1,0 +1,18 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getAbout } from "../lib/content";
+
+const about = await getAbout();
+const Content = about ? (await about.render()).Content : null;
+---
+
+<BaseLayout title="About" sideBarActiveItemID="about">
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">{about?.data.title ?? "About"}</div>
+  </div>
+  {Content ? (
+    <article class="prose max-w-none"><Content /></article>
+  ) : (
+    <p class="opacity-70">No about page yet.</p>
+  )}
+</BaseLayout>

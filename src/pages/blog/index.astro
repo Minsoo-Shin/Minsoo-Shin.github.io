@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HorizontalCard from "../../components/HorizontalCard.astro";
+import { getBlogByCategory, getAllTags, getPostsByTag } from "../../lib/content";
+import { BLOG_CATEGORIES } from "../../content/config";
+
+const grouped = await getBlogByCategory();
+const tags = await getAllTags();
+const tagCounts = await Promise.all(
+  tags.map(async (t) => ({ tag: t, count: (await getPostsByTag(t)).length }))
+);
+tagCounts.sort((a, b) => b.count - a.count);
+---
+
+<BaseLayout title="Blog" sideBarActiveItemID="blog">
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Blog</div>
+  </div>
+
+  <div class="mb-6">
+    <div class="text-sm font-semibold opacity-70 mb-2">Categories</div>
+    <div class="flex flex-wrap gap-2">
+      {BLOG_CATEGORIES.map((cat) => {
+        const count = grouped.get(cat)?.length ?? 0;
+        if (count === 0) return null;
+        return (
+          <a href={`/blog/category/${cat}`} class="badge badge-primary py-3 px-3 no-underline">
+            {cat} ({count})
+          </a>
+        );
+      })}
+    </div>
+  </div>
+
+  {tagCounts.length > 0 && (
+    <div class="mb-8">
+      <div class="text-sm font-semibold opacity-70 mb-2">Tags</div>
+      <div class="flex flex-wrap gap-2">
+        {tagCounts.map(({ tag, count }) => (
+          <a href={`/blog/tag/${tag}`} class="badge badge-outline py-2 px-3 no-underline">
+            #{tag} <span class="opacity-60 ml-1">{count}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  )}
+
+  {BLOG_CATEGORIES.map((cat) => {
+    const posts = grouped.get(cat) ?? [];
+    if (posts.length === 0) return null;
+    return (
+      <section class="mb-10">
+        <h2 class="text-2xl font-bold mb-3">{cat}</h2>
+        {posts.map((post) => (
+          <>
+            <HorizontalCard
+              title={post.data.title}
+              img={post.data.heroImage}
+              desc={post.data.description}
+              url={`/blog/${post.slug}`}
+              target="_self"
+              badge={post.data.badge}
+              tags={post.data.tags}
+              date={post.data.pubDate}
+            />
+            <div class="divider my-0" />
+          </>
+        ))}
+      </section>
+    );
+  })}
+</BaseLayout>

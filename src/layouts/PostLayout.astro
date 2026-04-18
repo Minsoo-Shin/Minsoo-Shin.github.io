@@ -1,0 +1,49 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
+import { Image } from "astro:assets";
+
+export interface Props {
+  title: string;
+  description?: string;
+  pubDate?: Date;
+  updatedDate?: Date;
+  heroImage?: string;
+  badge?: string;
+  tags?: string[];
+  category?: string;
+}
+
+const { title, description, pubDate, updatedDate, heroImage, badge, tags = [], category } = Astro.props;
+dayjs.extend(localizedFormat);
+const displayDate = pubDate ? dayjs(pubDate).format("ll") : null;
+---
+
+<BaseLayout title={title} description={description} image={heroImage} ogType="article">
+  <main class="md:flex md:justify-center">
+    <article class="prose prose-lg max-w-[750px] prose-img:mx-auto">
+      {heroImage && <Image width={750} height={422} format="webp" src={heroImage} alt={title} class="w-full mb-6" />}
+      <h1 class="title my-2 text-4xl font-bold">{title}</h1>
+      {displayDate && <time>{displayDate}</time>}
+      <br />
+      {category && (
+        <a href={`/blog/category/${category}`} class="badge badge-primary my-1 no-underline">{category}</a>
+      )}
+      {badge && <div class="badge badge-secondary my-1 ml-2">{badge}</div>}
+      {
+        tags &&
+          tags.map((tag) => (
+            <a href={`/blog/tag/${tag}`} class="badge badge-outline ml-2 no-underline">
+              {tag}
+            </a>
+          ))
+      }
+      {updatedDate && (
+        <div>Last updated on <time>{dayjs(updatedDate).format("ll")}</time></div>
+      )}
+      <div class="divider my-2"></div>
+      <slot />
+    </article>
+  </main>
+</BaseLayout>

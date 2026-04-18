@@ -1,0 +1,27 @@
+# build output
+dist/
+.cache
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
+.DS_Store
+
+# Astro
+.astro/
+# Ingested raw source files (not for deployment)
+_ingest/
+
+# Claude Code local settings (keep skills shared, hide local perms)
+.claude/settings.local.json

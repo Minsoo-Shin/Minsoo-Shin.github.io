@@ -1,0 +1,75 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import HorizontalCard from "../../components/HorizontalCard.astro";
+import { getProjects } from "../../lib/content";
+
+const projects = await getProjects();
+const company = projects.filter((p) => p.data.kind === "company");
+const side = projects.filter((p) => p.data.kind === "side");
+const oss = projects.filter((p) => p.data.kind === "open-source");
+
+const tracks = [
+  { id: "all", label: "All" },
+  { id: "hardware", label: "Hardware" },
+  { id: "software", label: "Software" },
+  { id: "both", label: "Cross-domain" },
+];
+
+const kindLabel = (k: string) =>
+  k === "company" ? "회사" : k === "side" ? "사이드" : "오픈소스";
+
+const sections = [
+  { title: "Company projects", items: company },
+  { title: "Side projects", items: side },
+  { title: "Open source", items: oss },
+].filter((s) => s.items.length > 0);
+---
+
+<BaseLayout title="Projects" sideBarActiveItemID="projects">
+  <div class="mb-5">
+    <div class="text-3xl w-full font-bold">Projects</div>
+  </div>
+
+  <div class="flex flex-wrap gap-2 mb-8" data-filter-root>
+    {tracks.map((t) => (
+      <button class="badge badge-outline py-3 px-3" data-filter={t.id}>{t.label}</button>
+    ))}
+  </div>
+
+  {sections.map((section) => (
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-3">{section.title}</h2>
+      {section.items.map((p) => (
+        <div id={p.slug} data-tracks={p.data.tracks.join(",")}>
+          <HorizontalCard
+            title={p.data.title}
+            subtitle={p.data.company}
+            img={p.data.heroImage}
+            desc={p.data.description}
+            url={`/projects/${p.slug}`}
+            target="_self"
+            tags={p.data.tags ?? p.data.stack}
+            date={p.data.pubDate}
+            badge={kindLabel(p.data.kind)}
+          />
+          <div class="divider my-0" />
+        </div>
+      ))}
+    </section>
+  ))}
+
+  <script>
+    const root = document.querySelector("[data-filter-root]");
+    const items = document.querySelectorAll<HTMLElement>("[data-tracks]");
+    root?.addEventListener("click", (e) => {
+      const target = e.target as HTMLElement;
+      const filter = target?.dataset?.filter;
+      if (!filter) return;
+      items.forEach((el) => {
+        const tracks = (el.dataset.tracks ?? "").split(",");
+        const visible = filter === "all" || tracks.includes(filter) || tracks.includes("both");
+        el.style.display = visible ? "" : "none";
+      });
+    });
+  </script>
+</BaseLayout>

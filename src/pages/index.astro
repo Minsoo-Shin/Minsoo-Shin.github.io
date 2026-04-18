@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import HorizontalCard from "../components/HorizontalCard.astro";
+import { Image } from "astro:assets";
+import { getBlogPosts, getFeaturedProjects } from "../lib/content";
+
+const posts = (await getBlogPosts()).slice(0, 5);
+const featured = await getFeaturedProjects();
+---
+
+<BaseLayout sideBarActiveItemID="home">
+  <div class="pb-12 mt-5 md:flex md:items-start md:gap-8">
+    <div class="flex-1">
+      <div class="text-xl py-1">Hey there 👋</div>
+      <div class="text-5xl font-bold">Minsoo Shin</div>
+      <div class="text-3xl py-3 font-bold">Backend Engineer · ex-Mechanical Engineer</div>
+      <div class="py-2">
+        <p class="text-lg">
+          Backend engineer (Go, Kotlin, Kafka, MQTT, CDC) with a background in OLED module
+          mechanical design at Samsung Display. Currently at <b>Partridge Systems</b>,
+          building backends for autonomous-driving scenario pipelines (ISO 21448 / SOTIF)
+          on a Physical AI platform.
+        </p>
+      </div>
+      <div class="mt-8">
+        <a class="btn" href="/resume/main">Resume</a>
+        <a class="btn btn-outline ml-3" href="/resume/hardware">Hardware track</a>
+        <a class="btn btn-outline ml-3" href="/resume/software">Software track</a>
+      </div>
+    </div>
+    <div class="mt-6 md:mt-0 md:w-[280px] md:shrink-0">
+      <Image src="/profile_otter.png" alt="Minsoo otter" width={560} height={840} format="webp" class="w-full rounded-2xl" />
+    </div>
+  </div>
+
+  {featured.length > 0 && (
+    <div>
+      <div class="text-3xl w-full font-bold mb-2">Featured projects</div>
+      {featured.map((p) => (
+        <>
+          <HorizontalCard
+            title={p.data.title}
+            subtitle={p.data.company}
+            img={p.data.heroImage}
+            desc={p.data.description}
+            url={`/projects/${p.slug}`}
+            target="_self"
+            tags={p.data.tags}
+            date={p.data.pubDate}
+          />
+          <div class="divider my-0" />
+        </>
+      ))}
+    </div>
+  )}
+
+  <div>
+    <div class="text-3xl w-full font-bold mb-5 mt-10">Latest from blog</div>
+  </div>
+
+  {posts.map((post) => (
+    <>
+      <HorizontalCard
+        title={post.data.title}
+        img={post.data.heroImage}
+        desc={post.data.description}
+        url={`/blog/${post.slug}`}
+        target="_self"
+        badge={post.data.badge}
+        tags={post.data.tags}
+        date={post.data.pubDate}
+      />
+      <div class="divider my-0" />
+    </>
+  ))}
+</BaseLayout>

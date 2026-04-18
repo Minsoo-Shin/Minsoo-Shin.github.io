@@ -1,0 +1,58 @@
+---
+import { type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getProjects } from "../../lib/content";
+import dayjs from "dayjs";
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: CollectionEntry<"projects">;
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const p = entry.data;
+---
+
+<BaseLayout title={p.title} description={p.description} sideBarActiveItemID="projects">
+  <main class="md:flex md:justify-center">
+    <article class="prose prose-lg max-w-[780px] prose-img:mx-auto">
+      <div class="mb-2">
+        <a href="/projects" class="text-sm opacity-70 no-underline">← Projects</a>
+      </div>
+      <h1 class="title my-2 text-4xl font-bold">{p.title}</h1>
+      <p class="opacity-80 my-2">{p.description}</p>
+
+      <div class="flex flex-wrap gap-2 my-3 text-sm items-center">
+        <span class="badge badge-secondary">
+          {p.kind === "company" ? "회사" : p.kind === "side" ? "사이드" : "오픈소스"}
+        </span>
+        {p.tracks.map((t) => <span class="badge badge-primary">{t}</span>)}
+        {p.company && <span class="opacity-70">· {p.company}</span>}
+        {p.role && <span class="opacity-70">· {p.role}</span>}
+        <span class="opacity-70">· {dayjs(p.pubDate).format("YYYY.MM")}</span>
+      </div>
+
+      {p.stack && p.stack.length > 0 && (
+        <div class="my-3 flex flex-wrap gap-1">
+          {p.stack.map((s) => <span class="badge badge-outline">{s}</span>)}
+        </div>
+      )}
+
+      <div class="my-3 flex gap-3">
+        {p.repo && <a href={p.repo} target="_blank" class="btn btn-sm">Repo ↗</a>}
+        {p.demo && <a href={p.demo} target="_blank" class="btn btn-sm btn-outline">Demo ↗</a>}
+      </div>
+
+      <div class="divider my-2"></div>
+      <Content />
+    </article>
+  </main>
+</BaseLayout>
