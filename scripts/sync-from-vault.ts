@@ -194,8 +194,12 @@ async function clearSyncedFiles() {
     for (const e of entries) {
       if (!e.isFile() || !e.name.endsWith(".md")) continue;
       const p = path.join(dir, e.name);
-      const head = await fs.readFile(p, "utf8").then((t) => t.slice(0, 200));
-      if (head.includes("synced-from-vault: true")) await fs.unlink(p);
+      const raw = await fs.readFile(p, "utf8");
+      // Only check the YAML frontmatter (between the first two --- fences).
+      // Long frontmatter can push the marker past an arbitrary byte cutoff.
+      const fmEnd = raw.indexOf("\n---", 4);
+      const fm = fmEnd > 0 ? raw.slice(0, fmEnd) : raw.slice(0, 2000);
+      if (fm.includes("synced-from-vault: true")) await fs.unlink(p);
     }
   }
   // Clear synced asset dirs

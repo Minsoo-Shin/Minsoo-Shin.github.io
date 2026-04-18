@@ -25,3 +25,4 @@ _ingest/
 
 # Claude Code local settings (keep skills shared, hide local perms)
 .claude/settings.local.json
+src/content/.obsidian/
