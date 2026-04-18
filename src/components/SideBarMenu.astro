@@ -28,9 +28,9 @@ const kinds = [
                 <li><a class="py-2 text-sm whitespace-nowrap" href="/projects">All projects</a></li>
                 {kinds.map((k) => (
                     <li>
-                        <a class="py-2 text-sm whitespace-nowrap" href={`/projects#${k.id}`}>
-                            {k.label}
-                            <span class="opacity-50 ml-1">{k.count}</span>
+                        <a class="py-2 text-sm flex justify-between items-center" href={`/projects#${k.id}`}>
+                            <span class="truncate">{k.label}</span>
+                            <span class="opacity-50 ml-2">{k.count}</span>
                         </a>
                     </li>
                 ))}
@@ -44,9 +44,9 @@ const kinds = [
                 <li><a class="py-2 text-sm whitespace-nowrap" href="/blog/">All posts</a></li>
                 {cats.map((c) => (
                     <li>
-                        <a class="py-2 text-sm whitespace-nowrap" href={`/blog/category/${c.name}`}>
-                            {c.name}
-                            <span class="opacity-50 ml-1">{c.count}</span>
+                        <a class="py-2 text-sm flex justify-between items-center" href={`/blog/category/${c.name}`}>
+                            <span class="truncate">{c.name}</span>
+                            <span class="opacity-50 ml-2">{c.count}</span>
                         </a>
                     </li>
                 ))}
