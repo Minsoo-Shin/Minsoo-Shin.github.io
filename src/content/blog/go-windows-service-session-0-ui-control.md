@@ -1,5 +1,5 @@
 ---
-title: "[Go] Windows Service(Session 0)에서 사용자 UI 제어하기 (Feat. Go & WTSSendMessage)"
+title: "Windows Service Session 0에서 사용자 UI 제어 — WTSSendMessage 직접 구현"
 description: "Windows Service의 Session 0 격리 문제를 WTSSendMessageW API로 해결하여 POS 연동 시스템의 주문 누락 CS를 0건으로 만든 경험기."
 pubDate: 2025-12-05
 category: Backend

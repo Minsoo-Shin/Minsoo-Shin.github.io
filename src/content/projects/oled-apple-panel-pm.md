@@ -1,5 +1,5 @@
 ---
-title: "OLED 모듈 Apple 플래그십 패널 개발 PM"
+title: "OLED 모듈 패널 개발 — 플래그십 프로젝트 PM"
 description: "Apple 플래그십 iPhone 패널 개발에서 협력사·유관부서 간 기술 스펙을 조율하고 사양 검토부터 공정 투입까지 전체 라이프사이클을 총괄."
 pubDate: 2021-12-01
 tracks: [hardware]

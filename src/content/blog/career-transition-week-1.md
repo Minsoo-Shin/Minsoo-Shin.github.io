@@ -1,5 +1,5 @@
 ---
-title: "[Week 1] 특별한 과제"
+title: "특별한 과제 — 커리어 전환 첫 주"
 description: "삼성디스플레이 엔지니어가 개발자로의 전향을 결심한 첫 주의 기록. 크래프톤 정글 1주차 회고."
 pubDate: 2021-11-06
 category: Career Journey

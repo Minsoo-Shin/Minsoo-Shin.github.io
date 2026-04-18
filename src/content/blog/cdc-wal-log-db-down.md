@@ -1,5 +1,5 @@
 ---
-title: "[CDC 구축] WAL 로그로 인한 DB 서버 down"
+title: "WAL 로그 누적으로 DB가 다운된 이유 — CDC 환경에서의 Debezium Heartbeat"
 description: "CDC 구축 후 트래픽이 적은 AWS RDS에서 WAL 로그가 누적되어 DB가 down된 현상의 원인 분석과 Debezium heartbeat 기반 해결 과정."
 pubDate: 2023-12-07
 category: Backend

@@ -61,6 +61,8 @@ const sections = [
   <script>
     const root = document.querySelector("[data-filter-root]");
     const items = document.querySelectorAll<HTMLElement>("[data-tracks]");
+    const sections = document.querySelectorAll<HTMLElement>("section[id]");
+
     root?.addEventListener("click", (e) => {
       const target = e.target as HTMLElement;
       const filter = target?.dataset?.filter;
@@ -71,5 +73,14 @@ const sections = [
         el.style.display = visible ? "" : "none";
       });
     });
+
+    function applyKindFilter() {
+      const hash = window.location.hash.replace("#", "");
+      sections.forEach((s) => {
+        s.style.display = !hash || s.id === hash ? "" : "none";
+      });
+    }
+    applyKindFilter();
+    window.addEventListener("hashchange", applyKindFilter);
   </script>
 </BaseLayout>

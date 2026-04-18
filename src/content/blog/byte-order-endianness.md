@@ -1,5 +1,5 @@
 ---
-title: "Byte Order"
+title: "Byte Order — 엔디안과 네트워크 바이트 오더"
 description: "빅 엔디안과 리틀 엔디안의 개념, CPU별 바이트 저장 순서, 네트워크 바이트 오더까지 바이트 순서(Byte Order)의 기본기를 정리."
 pubDate: 2023-07-07
 category: Backend

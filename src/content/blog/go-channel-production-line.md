@@ -1,5 +1,5 @@
 ---
-title: "[Golang] 채널(channel)의 장점"
+title: "Go 채널의 장점 — 공정 엔지니어의 직관으로"
 description: "Go 언어의 채널이 뮤텍스 없이 동시성 프로그래밍을 가능하게 하는 원리를 자동차 생산 공정(생산자-소비자 패턴)에 비유해 설명한 글."
 pubDate: 2022-06-18
 category: Backend

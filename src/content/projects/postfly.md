@@ -1,5 +1,5 @@
 ---
-title: "포스트플라이 (Postfly)"
+title: "포스트플라이 — 글로벌 역직구 물류 MVP"
 description: "글로벌 역직구 물류 플랫폼 MVP. RAG 기반 통관 안내 AI 챗봇, 주문/결제(PG)/배송 프로세스를 혼자 설계·구축해 앱스토어에 런칭."
 pubDate: 2025-06-01
 tracks: [software]

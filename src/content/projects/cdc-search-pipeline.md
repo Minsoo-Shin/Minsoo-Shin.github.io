@@ -1,5 +1,5 @@
 ---
-title: "CDC 검색 파이프라인 + 검색 품질 개선"
+title: "CDC 검색 파이프라인 — 이중 쓰기 제거와 검색 품질 개선"
 description: "PostgreSQL-Debezium-Kafka-Elasticsearch CDC로 이중 쓰기를 제거하고, 쿼리 튜닝·동의어 사전·Function Score로 검색 mAP@30을 0.23 → 0.39까지 끌어올림."
 pubDate: 2024-04-01
 tracks: [software]

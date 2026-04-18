@@ -1,5 +1,5 @@
 ---
-title: "[python] circuit breaker (pybreaker)"
+title: "Circuit Breaker 패턴 — pybreaker로 구현하기"
 description: "PyBreaker 라이브러리를 사용해 Python에서 Circuit Breaker 패턴을 구현하여 시스템 탄력성과 장애 내성을 확보하는 방법 정리."
 pubDate: 2025-11-26
 category: Backend

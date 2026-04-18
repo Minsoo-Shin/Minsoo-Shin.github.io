@@ -1,5 +1,5 @@
 ---
-title: "검색엔진 색인 파이프라인 구축 CDC, Kafka, Elasticsearch"
+title: "검색엔진 색인 파이프라인 — CDC · Kafka · Elasticsearch"
 description: "MongoDB Atlas Search에서 Elasticsearch로의 전환과 CDC/Kafka 기반 색인 파이프라인을 구축하며 마주친 운영 이슈와 해결 과정을 정리."
 pubDate: 2024-04-15
 category: Backend
