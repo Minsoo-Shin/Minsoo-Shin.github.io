@@ -23,7 +23,7 @@ highlights:
 experience:
   - partridge-systems
   - payhere
-  - lookpin
+  - looko
   - samsung-display
 skills:
   - group: "Languages"

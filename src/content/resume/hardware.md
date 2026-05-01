@@ -24,7 +24,7 @@ highlights:
 experience:
   - samsung-display
   - partridge-systems
-  - lookpin
+  - looko
   - payhere
 skills:
   - group: "Mechanical / Process"

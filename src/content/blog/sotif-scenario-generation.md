@@ -15,7 +15,7 @@ type: topic
 domain:
   - automotive
   - safety
-updated: 2026-04-16T00:00:00.000Z
+updated: 2026-04-19T00:00:00.000Z
 synced-from-vault: true
 ---
 
@@ -166,3 +166,5 @@ Bottom-Up 조합은 주로 Logical → Concrete 단계에서 파라미터 공간
 - [SOTIF-입문-가이드](/blog/sotif-introduction) — SOTIF 핵심 개념 단계별 설명
 - [SOTIF-AEB-사례-분석](/blog/sotif-aeb-case-study) — AEB 사례로 시나리오가 실제 설계 루프에서 어떻게 활용되는지 확인
 - ODD — 시나리오 파라미터 공간의 기반이 되는 운용설계영역
+- STPA — Top-Down 시나리오 생성의 대표 기법
+- SOTIF-STPA-ACC-시뮬레이션-평가 — STPA+시뮬레이션으로 Top-Down 시나리오를 정량 평가한 사례
