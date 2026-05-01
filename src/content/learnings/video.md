@@ -8,7 +8,7 @@ aliases:
   - 동영상
   - 영상
 published: true
-title: 비디오 — 코덱·컨테이너·스트리밍이 쌓아 올린 매체
+title: 비디오 기초
 description: 정지 이미지의 연속이라는 단순한 정의 위에 압축·전송 메커니즘이 어떻게 쌓이는지 한 번에 정리한다.
 pubDate: 2026-05-01T00:00:00.000Z
 category: Learnings
