@@ -3,9 +3,9 @@ track: hardware
 title: "신민수 · Mechanical / Manufacturing"
 tagline: "OLED 모듈 기구설계 · 공정 안정화에서 출발, 지금은 데이터·소프트웨어로 제조를 본다."
 summary: |
-  삼성디스플레이에서 OLED 모듈 개발 엔지니어로 Apple 플래그십 iPhone 패널 프로젝트를
-  협력사 및 유관부서와 조율하며 PM 역할을 수행. 사양 검토부터 공정 투입까지 전체
-  라이프사이클을 총괄. 이후 커리어를 백엔드로 전환해 Smart Factory · AI-driven
+  삼성디스플레이에서 OLED 모듈 기구설계 엔지니어(ME)로 Apple 플래그십 iPhone 패널
+  프로젝트의 사양 검토부터 공정 투입까지 전 과정을 수행 — 기구 파트 PM 역할을 겸하며
+  협력사 및 유관부서를 조율. 이후 커리어를 백엔드로 전환해 Smart Factory · AI-driven
   Manufacturing · Physical AI를 소프트웨어 관점에서 바라보고 있음.
 published: true
 highlights:
@@ -14,7 +14,7 @@ highlights:
     note: "삼성디스플레이"
   - value: "Apple"
     label: "플래그십 iPhone 패널"
-    note: "개발 Lifecycle 총괄 PM"
+    note: "ME · 기구 파트 PM 역할"
   - value: "IQC/OQC"
     label: "품질 관리 체계"
     note: "RSS · 통계적 공차 분석"
@@ -28,13 +28,13 @@ experience:
   - payhere
 skills:
   - group: "Mechanical / Process"
-    items: [OLED 모듈 기구설계, GD&T, RSS (Root Sum Square), 접착제 공정, 공정 안정화, SPC, DOE, RCA]
+    items: [OLED 모듈 기구설계, GD&T, RSS (Root Sum Square), OCA 라미네이션(광학 접합), 공정 안정화, SPC, DOE]
   - group: "Quality"
-    items: [IQC/OQC, 통계적 공차 분석, 고객 설계 협의 (Apple)]
+    items: [IQC/IPQC/OQC, 통계적 공차 분석, FACA, SCAR 대응·발행, 고객 설계 협의 (Apple)]
   - group: "Project / Program"
-    items: [협력사 기술 리딩, 유관부서 스펙 조율, 개발 Lifecycle 총괄]
+    items: [협력사 기술 리딩, 유관부서 스펙 조율, 개발 Lifecycle 기구 파트 리딩]
   - group: "Data & Automation"
-    items: [Python, VBA, 공정 데이터 시각화]
+    items: [Excel/VBA, 공정 데이터 시각화]
   - group: "Current Stack (software side)"
     items: [Go, Kotlin, Kafka, MQTT, CDC, Elasticsearch]
 education:

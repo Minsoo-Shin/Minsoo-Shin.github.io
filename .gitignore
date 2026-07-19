@@ -23,6 +23,9 @@ pnpm-debug.log*
 # Ingested raw source files (not for deployment)
 _ingest/
 
+# Personal application documents (resumes, cover letters) — never publish
+drafts/
+
 # Claude Code local settings (keep skills shared, hide local perms)
 .claude/settings.local.json
 src/content/.obsidian/
